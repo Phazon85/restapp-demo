@@ -21,4 +21,4 @@ vendor/
 # Go workspace file
 go.work
 
-_debug_bin
+__debug_bin
