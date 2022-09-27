@@ -16,7 +16,7 @@
     "host": "localhost:8080",
     "basePath": "/api/v1",
     "paths": {
-        "/api/v1/todos": {
+        "/todos": {
             "get": {
                 "description": "Get all todos",
                 "produces": [

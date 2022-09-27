@@ -23,7 +23,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/todos": {
+        "/todos": {
             "get": {
                 "description": "Get all todos",
                 "produces": [

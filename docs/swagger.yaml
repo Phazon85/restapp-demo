@@ -11,7 +11,7 @@ info:
   title: Rest App Demo
   version: "1.0"
 paths:
-  /api/v1/todos:
+  /todos:
     get:
       description: Get all todos
       produces:

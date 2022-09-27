@@ -19,10 +19,13 @@ func New() *gin.Engine {
 	// Gin Routes.
 	v1 := r.Group("/api/v1")
 	{
+		//Todos router group
 		todos := v1.Group("/todos")
 		{
 			todos.GET("", todosController.GetTodos)
 		}
+
+		//base v1 routes
 		v1.GET("/healthz", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"message": "pong",
