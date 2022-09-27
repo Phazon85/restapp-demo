@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	_ "github.com/Phazon85/restapp-demo/docs"
-	todoHandler "github.com/Phazon85/restapp-demo/pkg/handlers/todos"
-	todoService "github.com/Phazon85/restapp-demo/pkg/services/todos"
+	todoHandler "github.com/Phazon85/restapp-demo/handlers/todos"
+	todoService "github.com/Phazon85/restapp-demo/services/todos"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 	swaggerFiles "github.com/swaggo/files"
@@ -48,11 +48,11 @@ func main() {
 		log.Fatal(err)
 	}
 
-	//Create services. //TODO: setup business logic for each handler
+	//Create services.
 	todoService := todoService.New(sqlConn)
 
 	// Instantiate Handlers.
-	todoHandler := todoHandler.NewHandler(todoService)
+	todoHandler := todoHandler.New(todoService)
 
 	// Create new Gin Engine.
 	r := gin.Default()
@@ -63,7 +63,10 @@ func main() {
 		//Todos router group
 		todos := v1.Group("/todos")
 		{
-			todos.GET("", todoHandler.GetTodos)
+			todos.GET("", todoHandler.Get)
+			todos.POST("", todoHandler.Post)
+			todos.DELETE("/:id", todoHandler.Delete)
+			todos.PUT("/:id", todoHandler.Put)
 		}
 
 		//base v1 routes
