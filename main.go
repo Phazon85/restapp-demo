@@ -48,7 +48,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	//Create services. //TODO: setup business logic for each handler
+	//Create services.
 	todoService := todoService.New(sqlConn)
 
 	// Instantiate Handlers.
@@ -63,7 +63,10 @@ func main() {
 		//Todos router group
 		todos := v1.Group("/todos")
 		{
-			todos.GET("", todoHandler.GetTodos)
+			todos.GET("", todoHandler.Get)
+			todos.POST("", todoHandler.Post)
+			todos.DELETE("/:id", todoHandler.Delete)
+			todos.PUT("/:id", todoHandler.Put)
 		}
 
 		//base v1 routes
