@@ -25,7 +25,7 @@
                 "tags": [
                     "todos"
                 ],
-                "summary": "Get all todos",
+                "summary": "GET todos",
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -36,6 +36,137 @@
                     "500": {
                         "description": "Internal Server Error"
                     }
+                }
+            },
+            "post": {
+                "description": "Creates a new todo",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todos"
+                ],
+                "summary": "POST todo",
+                "parameters": [
+                    {
+                        "description": "Request body.",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/todos.PostReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/todos/:id": {
+            "put": {
+                "description": "Updates the name or description of a particular todo",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todos"
+                ],
+                "summary": "Put todo",
+                "parameters": [
+                    {
+                        "description": "Request body.",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/todos.PutReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deletes a todo by id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todos"
+                ],
+                "summary": "DELETE todo",
+                "parameters": [
+                    {
+                        "description": "Request body.",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/todos.PostReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "todos.PostReq": {
+            "description": "PostReq contrains todo information.",
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "Description of the todo.",
+                    "type": "string",
+                    "example": "This is a description."
+                },
+                "name": {
+                    "description": "Name of the todo.",
+                    "type": "string",
+                    "example": "name"
+                }
+            }
+        },
+        "todos.PutReq": {
+            "description": "PutReq contrains todo information.",
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "Description of the todo.",
+                    "type": "string",
+                    "example": "This is a description."
+                },
+                "id": {
+                    "description": "ID of the todo",
+                    "type": "string",
+                    "example": "3"
+                },
+                "name": {
+                    "description": "Name of the todo.",
+                    "type": "string",
+                    "example": "name"
                 }
             }
         }

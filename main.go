@@ -19,18 +19,18 @@ const (
 	errorExitCode              = 1
 )
 
-// @title           Rest App Demo
-// @version         1.0
-// @description     This is a sample server rest server using the Gin Router
-// @termsOfService  http://swagger.io/terms/
+// @title          Rest App Demo
+// @version        1.0
+// @description    This is a sample server rest server using the Gin Router
+// @termsOfService http://swagger.io/terms/
 
-// @contact.email  justin@phazon.app
+// @contact.email justin@phazon.app
 
-// @license.name  Apache 2.0
-// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+// @license.name Apache 2.0
+// @license.url  http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      localhost:8080
-// @BasePath  /api/v1
+// @host     localhost:8080
+// @BasePath /api/v1
 
 func main() {
 

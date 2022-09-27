@@ -1,4 +1,33 @@
 basePath: /api/v1
+definitions:
+  todos.PostReq:
+    description: PostReq contrains todo information.
+    properties:
+      description:
+        description: Description of the todo.
+        example: This is a description.
+        type: string
+      name:
+        description: Name of the todo.
+        example: name
+        type: string
+    type: object
+  todos.PutReq:
+    description: PutReq contrains todo information.
+    properties:
+      description:
+        description: Description of the todo.
+        example: This is a description.
+        type: string
+      id:
+        description: ID of the todo
+        example: "3"
+        type: string
+      name:
+        description: Name of the todo.
+        example: name
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -23,7 +52,67 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
-      summary: Get all todos
+      summary: GET todos
+      tags:
+      - todos
+    post:
+      consumes:
+      - application/json
+      description: Creates a new todo
+      parameters:
+      - description: Request body.
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/todos.PostReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "500":
+          description: Internal Server Error
+      summary: POST todo
+      tags:
+      - todos
+  /todos/:id:
+    delete:
+      description: Deletes a todo by id
+      parameters:
+      - description: Request body.
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/todos.PostReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      summary: DELETE todo
+      tags:
+      - todos
+    put:
+      description: Updates the name or description of a particular todo
+      parameters:
+      - description: Request body.
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/todos.PutReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      summary: Put todo
       tags:
       - todos
 swagger: "2.0"
