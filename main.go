@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	_ "github.com/Phazon85/restapp-demo/docs"
-	todoHandler "github.com/Phazon85/restapp-demo/pkg/handlers/todos"
-	todoService "github.com/Phazon85/restapp-demo/pkg/services/todos"
+	todoHandler "github.com/Phazon85/restapp-demo/handlers/todos"
+	todoService "github.com/Phazon85/restapp-demo/services/todos"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 	swaggerFiles "github.com/swaggo/files"
@@ -52,7 +52,7 @@ func main() {
 	todoService := todoService.New(sqlConn)
 
 	// Instantiate Handlers.
-	todoHandler := todoHandler.NewHandler(todoService)
+	todoHandler := todoHandler.New(todoService)
 
 	// Create new Gin Engine.
 	r := gin.Default()

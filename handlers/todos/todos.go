@@ -1,4 +1,4 @@
-package handlers
+package todos
 
 import (
 	"net/http"
@@ -7,12 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type TodoHandler struct {
+type Handler struct {
 	service *todos.Service
 }
 
-func NewTodoHandler(repo *todos.Service) *TodoHandler {
-	return &TodoHandler{
+func New(repo *todos.Service) *Handler {
+	return &Handler{
 		service: repo,
 	}
 }
@@ -26,7 +26,7 @@ func NewTodoHandler(repo *todos.Service) *TodoHandler {
 // @Failure      404  {object}  nil
 // @Failure      500  {object}  nil
 // @Router       /todos [get]
-func (hand *TodoHandler) GetTodos(c *gin.Context) {
+func (hand *Handler) GetTodos(c *gin.Context) {
 	// Call GetTodos from Repository.
 	entries, err := hand.service.GetTodos()
 	if err != nil {
