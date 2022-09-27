@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetTodoHandler(c *gin.Context) {
+func (ctrl *Controller) GetTodos(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "test",
 	})
