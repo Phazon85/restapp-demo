@@ -1,0 +1,29 @@
+basePath: /api/v1
+host: localhost:8080
+info:
+  contact:
+    email: justin@phazon.app
+  description: This is a sample server rest server using the Gin Router
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Rest App Demo
+  version: "1.0"
+paths:
+  /todos:
+    get:
+      description: Get all todos
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Get all todos
+      tags:
+      - todos
+swagger: "2.0"
