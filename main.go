@@ -45,15 +45,6 @@ var (
 // @BasePath /api/v1
 
 func main() {
-
-	// Setup interrupt handler to gracefully shut down server.
-	// errc := make(chan error)
-	// go func() {
-	// 	c := make(chan os.Signal, errorExitCode)
-	// 	errc <- fmt.Errorf("%s", <-c)
-	// 	log.Println("channel error")
-	// }()
-
 	//Establish repository connection.
 	sqlConn, err := sql.Open(defaultSQLDriver, fmt.Sprintf(sqlConnectionString, defaultHost, defaultPort, defaultUser, defaultPassword, defaultDBName))
 	if err != nil {
