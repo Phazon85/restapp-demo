@@ -2,6 +2,8 @@ package main
 
 import (
 	"database/sql"
+	"flag"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -15,8 +17,18 @@ import (
 )
 
 const (
-	sqlConnectionString string = "host=%s port=%d user=%s password=%s dbname=%s sslmode=disable"
-	errorExitCode              = 1
+	sqlConnectionString = "host=%s port=%d user=%s password=%s dbname=%s sslmode=disable"
+	defaultSQLDriver    = "postgres"
+	defaultHost         = "localhost"
+	defaultPort         = 5432
+	defaultUser         = "postgres"
+	defaultPassword     = "Voltage13-2"
+	defaultDBName       = "restapp-demo"
+	errorExitCode       = 1
+)
+
+var (
+	host = flag.String("host", "test", "host")
 )
 
 // @title          Rest App Demo
@@ -43,7 +55,7 @@ func main() {
 	// }()
 
 	//Establish repository connection.
-	sqlConn, err := sql.Open("postgres", "host=localhost port=5432 user=postgres password=Voltage13-2 dbname=restapp-demo sslmode=disable")
+	sqlConn, err := sql.Open(defaultSQLDriver, fmt.Sprintf(sqlConnectionString, defaultHost, defaultPort, defaultUser, defaultPassword, defaultDBName))
 	if err != nil {
 		log.Fatal(err)
 	}
