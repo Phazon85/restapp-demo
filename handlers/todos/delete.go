@@ -16,11 +16,11 @@ import (
 // @Failure     500 {object} nil
 // @Router      /todos/:id [delete]
 func (hand *Handler) Delete(c *gin.Context) {
-	//Call Delete from todos service
+	// Call Delete from todos service
 	if err := hand.service.Delete(c.Param("id")); err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 	}
 
-	//Send Response.
+	// Send Response.
 	c.Status(http.StatusOK)
 }

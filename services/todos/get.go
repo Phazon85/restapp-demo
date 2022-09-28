@@ -6,7 +6,6 @@ func (service *Service) Get() ([]*Entry, error) {
 
 	rows, err := service.DB.Query(allEntries)
 	if err != nil {
-
 		return nil, err
 	}
 	defer rows.Close()
