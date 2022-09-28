@@ -27,9 +27,7 @@ const (
 	errorExitCode       = 1
 )
 
-var (
-	host = flag.String("host", "test", "host")
-)
+var host = flag.String("host", "test", "host")
 
 // @title          Rest App Demo
 // @version        1.0
@@ -45,13 +43,13 @@ var (
 // @BasePath /api/v1
 
 func main() {
-	//Establish repository connection.
+	// Establish repository connection.
 	sqlConn, err := sql.Open(defaultSQLDriver, fmt.Sprintf(sqlConnectionString, defaultHost, defaultPort, defaultUser, defaultPassword, defaultDBName))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	//Create services.
+	// Instantiate services.
 	todoService := todoService.New(sqlConn)
 
 	// Instantiate Handlers.
@@ -63,7 +61,7 @@ func main() {
 	// Gin Routes.
 	v1 := r.Group("/api/v1")
 	{
-		//Todos router group
+		// Todos router group
 		todos := v1.Group("/todos")
 		{
 			todos.GET("", todoHandler.Get)
@@ -72,7 +70,7 @@ func main() {
 			todos.PUT("/:id", todoHandler.Put)
 		}
 
-		//base v1 routes
+		// base v1 routes
 		v1.GET("/healthz", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"message": "pong",
@@ -82,6 +80,6 @@ func main() {
 	}
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	//Run Gin server.
+	// Run Gin server.
 	r.Run(":8080")
 }

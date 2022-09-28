@@ -22,22 +22,22 @@ func (hand *Handler) Put(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, err)
 	}
 
-	//Call Put from todos service
+	// Call Put from todos service
 	if err := hand.service.Put(req.toServiceEntry(c.Param("id"))); err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 	}
 
-	//Send Response.
+	// Send Response.
 	c.Status(http.StatusOK)
 }
 
-//@Description PutReq contrains todo information.
+// @Description PutReq contrains todo information.
 type PutReq struct {
-	//ID of the todo
+	// ID of the todo
 	ID string `json:"id" example:"3"`
-	//Name of the todo.
+	// Name of the todo.
 	Name string `json:"name,omitempty" example:"name"`
-	//Description of the todo.
+	// Description of the todo.
 	Description string `json:"description,omitempty" example:"This is a description."`
 }
 

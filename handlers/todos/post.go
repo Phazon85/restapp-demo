@@ -23,20 +23,20 @@ func (hand *Handler) Post(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, err)
 	}
 
-	//Call Post from todos service.
+	// Call Post from todos service.
 	if err := hand.service.Post(req.toServiceEntry()); err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 	}
 
-	//Send Response.
+	// Send Response.
 	c.Status(http.StatusCreated)
 }
 
-//@Description PostReq contrains todo information.
+// @Description PostReq contrains todo information.
 type PostReq struct {
-	//Name of the todo.
+	// Name of the todo.
 	Name string `json:"name,omitempty" example:"name"`
-	//Description of the todo.
+	// Description of the todo.
 	Description string `json:"description,omitempty" example:"This is a description."`
 }
 

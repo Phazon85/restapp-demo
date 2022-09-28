@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restapp-demo
+  labels:
+    app: restapp-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: restapp-demo
+  template:
+    metadata:
+      labels:
+        app: restapp-demo
+    spec:
+      containers:
+      - name: restapp-demo
+        image: phazon85/restapp-demo
+        ports:
+        - containerPort: 8080
