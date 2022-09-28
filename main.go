@@ -2,6 +2,8 @@ package main
 
 import (
 	"database/sql"
+	"flag"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -15,22 +17,32 @@ import (
 )
 
 const (
-	sqlConnectionString string = "host=%s port=%d user=%s password=%s dbname=%s sslmode=disable"
-	errorExitCode              = 1
+	sqlConnectionString = "host=%s port=%d user=%s password=%s dbname=%s sslmode=disable"
+	defaultSQLDriver    = "postgres"
+	defaultHost         = "localhost"
+	defaultPort         = 5432
+	defaultUser         = "postgres"
+	defaultPassword     = "Voltage13-2"
+	defaultDBName       = "restapp-demo"
+	errorExitCode       = 1
 )
 
-// @title           Rest App Demo
-// @version         1.0
-// @description     This is a sample server rest server using the Gin Router
-// @termsOfService  http://swagger.io/terms/
+var (
+	host = flag.String("host", "test", "host")
+)
 
-// @contact.email  justin@phazon.app
+// @title          Rest App Demo
+// @version        1.0
+// @description    This is a sample server rest server using the Gin Router
+// @termsOfService http://swagger.io/terms/
 
-// @license.name  Apache 2.0
-// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+// @contact.email justin@phazon.app
 
-// @host      localhost:8080
-// @BasePath  /api/v1
+// @license.name Apache 2.0
+// @license.url  http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host     localhost:8080
+// @BasePath /api/v1
 
 func main() {
 
@@ -43,7 +55,7 @@ func main() {
 	// }()
 
 	//Establish repository connection.
-	sqlConn, err := sql.Open("postgres", "host=localhost port=5432 user=postgres password=Voltage13-2 dbname=restapp-demo sslmode=disable")
+	sqlConn, err := sql.Open(defaultSQLDriver, fmt.Sprintf(sqlConnectionString, defaultHost, defaultPort, defaultUser, defaultPassword, defaultDBName))
 	if err != nil {
 		log.Fatal(err)
 	}

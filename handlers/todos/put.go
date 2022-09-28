@@ -8,14 +8,14 @@ import (
 )
 
 // Put godoc
-// @Summary      Put todo
-// @Description  Updates the name or description of a particular todo
-// @Tags         todos
-// @Produce      json
-// @Param body body PutReq true "Request body."
-// @Success      200
-// @Failure      500  {object}  nil
-// @Router       /todos/:id [delete]
+// @Summary     Put todo
+// @Description Updates the name or description of a particular todo
+// @Tags        todos
+// @Produce     json
+// @Param       body body PutReq true "Request body."
+// @Success     200
+// @Failure     500 {object} nil
+// @Router      /todos/:id [put]
 func (hand *Handler) Put(c *gin.Context) {
 	var req PutReq
 	if err := c.BindJSON(&req); err != nil {
@@ -31,10 +31,14 @@ func (hand *Handler) Put(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+//@Description PutReq contrains todo information.
 type PutReq struct {
-	ID          string
-	Name        string
-	Description string
+	//ID of the todo
+	ID string `json:"id" example:"3"`
+	//Name of the todo.
+	Name string `json:"name,omitempty" example:"name"`
+	//Description of the todo.
+	Description string `json:"description,omitempty" example:"This is a description."`
 }
 
 func (req PutReq) toServiceEntry(id string) *todos.Entry {

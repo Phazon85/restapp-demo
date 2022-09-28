@@ -8,15 +8,15 @@ import (
 )
 
 // Post godoc
-// @Summary      POST todo
-// @Description  Creates a new todo
-// @Tags         todos
-// @Accept	 json
-// @Produce      json
-// @Param body body PostReq true "Request body."
-// @Success      201
-// @Failure      500  {object}  nil
-// @Router       /todos [post]
+// @Summary     POST todo
+// @Description Creates a new todo
+// @Tags        todos
+// @Accept      json
+// @Produce     json
+// @Param       body body PostReq true "Request body."
+// @Success     201
+// @Failure     500 {object} nil
+// @Router      /todos [post]
 func (hand *Handler) Post(c *gin.Context) {
 	var req PostReq
 	if err := c.BindJSON(&req); err != nil {
@@ -32,8 +32,11 @@ func (hand *Handler) Post(c *gin.Context) {
 	c.Status(http.StatusCreated)
 }
 
+//@Description PostReq contrains todo information.
 type PostReq struct {
-	Name        string `json:"name,omitempty" example:"name"`
+	//Name of the todo.
+	Name string `json:"name,omitempty" example:"name"`
+	//Description of the todo.
 	Description string `json:"description,omitempty" example:"This is a description."`
 }
 
