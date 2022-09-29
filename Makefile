@@ -21,8 +21,7 @@ dep:
 	go mod download
 
 lint:
-	golangci-lint run --enable-all
+	gofumpt -l -w . 
 
 docker:
 	docker build --tag phazon85/restapp-demo .
-	docker push phazon85/restapp-demo

@@ -1,9 +1,9 @@
 package todos_test
 
 import (
-	"reflect"
 	"testing"
 
+	"github.com/Phazon85/restapp-demo/handlers/handlerstest"
 	. "github.com/Phazon85/restapp-demo/handlers/todos"
 	"github.com/Phazon85/restapp-demo/services/todos"
 )
@@ -32,27 +32,29 @@ func (m *MockService) Put(entry *todos.Entry) error {
 func TestNew(t *testing.T) {
 	t.Parallel()
 	type args struct {
-		repo *todos.Service
+		repo Service
+	}
+	type want struct {
+		handler *Handler
 	}
 	tests := []struct {
 		name string
-		args args
+		args *args
 		want *Handler
 	}{
 		{
 			name: "Handler: New() returns expected handler",
-			args: args{
-				repo: nil,
+			args: &args{
+				repo: &MockService{},
 			},
-			want: New(nil),
+			want: New(&MockService{}),
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			if got := New(tt.args.repo); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("New() = %v, want %v", got, tt.want)
-			}
+			handler := New(tt.args.repo)
+			handlerstest.AssertObjectsAreEqual(t, tt.want, handler)
 		})
 	}
 }

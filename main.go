@@ -2,8 +2,9 @@ package main
 
 import (
 	"database/sql"
-	"flag"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -15,19 +16,6 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
 )
-
-const (
-	sqlConnectionString = "host=%s port=%d user=%s password=%s dbname=%s sslmode=disable"
-	defaultSQLDriver    = "postgres"
-	defaultHost         = "localhost"
-	defaultPort         = 5432
-	defaultUser         = "postgres"
-	defaultPassword     = "Voltage13-2"
-	defaultDBName       = "restapp-demo"
-	errorExitCode       = 1
-)
-
-var host = flag.String("host", "test", "host")
 
 // @title          Rest App Demo
 // @version        1.0
@@ -42,12 +30,43 @@ var host = flag.String("host", "test", "host")
 // @host     localhost:8080
 // @BasePath /api/v1
 
+const (
+	sqlConnectionString = "host=%s port=%s user=%s password=%s dbname=%s sslmode=%s"
+	defaultFileName     = "/etc/dbconfig"
+	errorExitCode       = 1
+)
+
+type configuration struct {
+	Host       string `json:"host"`
+	Port       string `json:"port"`
+	User       string `json:"user"`
+	Password   string `json:"password"`
+	DriverName string `json:"driverName"`
+	DBName     string `json:"dbName"`
+	SSLMode    string `json:"sslMode"`
+}
+
 func main() {
-	// Establish repository connection.
-	sqlConn, err := sql.Open(defaultSQLDriver, fmt.Sprintf(sqlConnectionString, defaultHost, defaultPort, defaultUser, defaultPassword, defaultDBName))
+	// Initialize configuration
+	cfg := &configuration{}
+	data, err := ioutil.ReadFile(defaultFileName)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	if err := json.Unmarshal(data, cfg); err != nil {
+		log.Fatal(err)
+	}
+
+	// Establish repository connection.
+	sqlConn, err := sql.Open(cfg.DriverName, fmt.Sprintf(sqlConnectionString, cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.DBName, cfg.SSLMode))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// if err := sqlConn.Ping(); err != nil {
+	// 	log.Fatal(err)
+	// }
 
 	// Instantiate services.
 	todoService := todoService.New(sqlConn)

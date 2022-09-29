@@ -20,6 +20,8 @@ func (hand *Handler) Get(c *gin.Context) {
 	entries, err := hand.service.Get()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
+
+		return
 	}
 
 	// Send Response.

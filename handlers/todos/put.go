@@ -20,11 +20,15 @@ func (hand *Handler) Put(c *gin.Context) {
 	var req PutReq
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusInternalServerError, err)
+
+		return
 	}
 
 	// Call Put from todos service
 	if err := hand.service.Put(req.toServiceEntry(c.Param("id"))); err != nil {
 		c.JSON(http.StatusInternalServerError, err)
+
+		return
 	}
 
 	// Send Response.
