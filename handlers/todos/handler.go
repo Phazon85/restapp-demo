@@ -6,6 +6,7 @@ import (
 
 type Service interface {
 	Get() ([]*todos.Entry, error)
+	GetByID(id string) (*todos.Entry, error)
 	Delete(id string) error
 	Post(entry *todos.Entry) error
 	Put(entry *todos.Entry) error

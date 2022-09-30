@@ -23,5 +23,7 @@ dep:
 lint:
 	gofumpt -l -w . 
 
+# docker push phazon85/restapp-demo
 docker:
 	docker build --tag phazon85/restapp-demo .
+	
