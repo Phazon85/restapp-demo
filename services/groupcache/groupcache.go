@@ -21,8 +21,8 @@ const (
 )
 
 type Service struct {
-	logger  *zap.Logger
 	Address string
+	Logger  *zap.Logger
 	Port    string
 	Pool    *groupcache.HTTPPool
 }
@@ -36,7 +36,7 @@ func New(logger *zap.Logger) (*Service, error) {
 	tempAddress := fmt.Sprintf(addrTemplate, addr, defaultPort)
 
 	return &Service{
-		logger:  logger,
+		Logger:  logger,
 		Address: tempAddress,
 		Port:    defaultPort,
 	}, nil

@@ -1,9 +1,11 @@
 package todos
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/mailgun/groupcache"
 )
 
 // Get godoc
@@ -49,4 +51,30 @@ func (hand *Handler) GetByID(c *gin.Context) {
 
 	// Send Response.
 	c.JSON(http.StatusOK, entry)
+}
+
+func (hand *Handler) TestGetByID(group *groupcache.Group) gin.HandlerFunc {
+	return gin.HandlerFunc(func(c *gin.Context) {
+		var b []byte
+		res := &GetIDRes{}
+
+		err := group.Get(c, c.Param("key"), groupcache.AllocatingByteSliceSink(&b))
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, err)
+		}
+
+		err = json.Unmarshal(b, res)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, err)
+		}
+		// Send Response.
+		c.JSON(http.StatusOK, res)
+	},
+	)
+}
+
+type GetIDRes struct {
+	ID          string
+	Name        string
+	Description string
 }

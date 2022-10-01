@@ -2,14 +2,18 @@ package todos
 
 import (
 	"database/sql"
+
+	"go.uber.org/zap"
 )
 
 type Service struct {
-	DB *sql.DB
+	Logger *zap.Logger
+	DB     *sql.DB
 }
 
-func New(db *sql.DB) *Service {
+func New(logger *zap.Logger, db *sql.DB) *Service {
 	return &Service{
-		DB: db,
+		Logger: logger,
+		DB:     db,
 	}
 }

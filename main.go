@@ -2,13 +2,11 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	_ "github.com/Phazon85/restapp-demo/docs"
 	todoHandler "github.com/Phazon85/restapp-demo/handlers/todos"
@@ -43,6 +41,7 @@ const (
 	defaultDBName       = "restapp-demo"
 	defaultSSLMode      = "disable"
 	defaultDriverName   = "postgres"
+	defaultCacheSize    = 1024 * 1024
 	sqlConnectionString = "host=%s port=%s user=%s password=%s dbname=%s sslmode=%s"
 	errorExitCode       = 1
 )
@@ -81,7 +80,13 @@ func main() {
 		logger.Fatal("sql.Ping - Failed to connect to SQL object: ", zap.Error(err))
 	}
 
-	// Create groupcache Service
+	// Instantiate services.
+	todoServ := todoService.New(logger, sqlConn)
+
+	// Instantiate handlers.
+	todoHandler := todoHandler.New(todoServ)
+
+	// Instantiate groupcache service.
 	groupcacheService, err := groupcacheService.New(logger)
 	if err != nil {
 		logger.Fatal("groupcacheService.New - Failed to instantiate HTTPPool: ", zap.Error(err))
@@ -93,27 +98,8 @@ func main() {
 	// Pool keeps track of peers in our cluster and identifies which peer owns a key.
 	groupcacheService.SetPeers()
 
-	// Instantiate services.
-	todoServ := todoService.New(sqlConn)
-
-	// Instantiate Handlers.
-	todoHandler := todoHandler.New(todoServ)
-
 	//Create groupcache groups to serve.
-	testGroup := groupcache.NewGroup("test", 1024*1024, groupcache.GetterFunc(
-		func(ctx groupcache.Context, key string, dest groupcache.Sink) error {
-			logger.Info(fmt.Sprintf("Cache Miss, Hitting DB for key: %s", key))
-			oneMinuteFromNow := time.Now().Add(time.Minute)
-			// dest.SetBytes([]byte("test"), oneMinuteFromNow)
-			entry, err := todoServ.GetByID(key)
-			if err != nil {
-				return err
-			}
-			bytes, err := json.Marshal(entry)
-			dest.SetBytes(bytes, oneMinuteFromNow)
-			return nil
-		},
-	))
+	testGroup := groupcache.NewGroup("test", defaultCacheSize, groupcacheService.NewTodoGetter(todoServ))
 
 	// Create new Gin Engine.
 	r := gin.Default()
@@ -125,7 +111,7 @@ func main() {
 		todos := v1Group.Group("/todos")
 		{
 			todos.GET("", todoHandler.Get)
-			todos.GET("/:key", todoHandler.GetByID)
+			todos.GET("/:key", todoHandler.TestGetByID(testGroup))
 			todos.POST("", todoHandler.Post)
 			todos.DELETE("/:id", todoHandler.Delete)
 			todos.PUT("/:id", todoHandler.Put)
@@ -140,26 +126,9 @@ func main() {
 
 	}
 
+	// Groupcache router group
 	groupcacheGroup := r.Group("/_groupcache")
 	{
-		// Todos router group
-		key := groupcacheGroup.Group("/:key")
-		{
-			key.GET("", func(c *gin.Context) {
-				var b []byte
-				stuff := &todoService.Entry{}
-				key := c.Param("key")
-				err := testGroup.Get(c, key, groupcache.AllocatingByteSliceSink(&b))
-				if err != nil {
-					c.JSON(http.StatusInternalServerError, err)
-				}
-				err = json.Unmarshal(b, stuff)
-				if err != nil {
-					c.JSON(http.StatusInternalServerError, err)
-				}
-				c.JSON(http.StatusOK, stuff)
-			})
-		}
 		groupcacheGroup.GET("", func(c *gin.Context) { groupcacheService.Pool.ServeHTTP(c.Writer, c.Request) })
 
 	}

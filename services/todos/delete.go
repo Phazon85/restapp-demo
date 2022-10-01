@@ -1,6 +1,8 @@
 package todos
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func (service *Service) Delete(id string) error {
 	deleteEntry := fmt.Sprintf("DELETE FROM todos WHERE id = %s ", id)
