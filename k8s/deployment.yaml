@@ -16,6 +16,15 @@ spec:
     spec:
       containers:
       - name: restapp-demo
-        image: phazon85/restapp-demo
+        image: phazon85/restapp-demo:latest
+        volumeMounts:
+        - name: dbconfig
+          mountPath: "/etc"
+          readOnly: true
         ports:
         - containerPort: 8080
+      volumes:
+        - name: dbconfig
+          secret:
+            secretName: dbconfig
+            optional: false

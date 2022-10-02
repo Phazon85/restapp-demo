@@ -19,6 +19,8 @@ func (hand *Handler) Delete(c *gin.Context) {
 	// Call Delete from todos service
 	if err := hand.service.Delete(c.Param("id")); err != nil {
 		c.JSON(http.StatusInternalServerError, err)
+
+		return
 	}
 
 	// Send Response.

@@ -22,3 +22,4 @@ vendor/
 go.work
 
 __debug_bin
+k8s/dbconfig.json
