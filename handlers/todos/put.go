@@ -25,7 +25,7 @@ func (hand *Handler) Put(c *gin.Context) {
 	}
 
 	// Call Put from todos service
-	if err := hand.service.Put(req.toServiceEntry(c.Param("id"))); err != nil {
+	if err := hand.service.PutTodo(req.toServiceEntry(c.Param("id"))); err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 
 		return

@@ -5,11 +5,11 @@ import (
 )
 
 type Service interface {
-	Get() ([]*todos.Entry, error)
-	GetByID(id string) (*todos.Entry, error)
-	Delete(id string) error
-	Post(entry *todos.Entry) error
-	Put(entry *todos.Entry) error
+	GetTodo() ([]*todos.Entry, error)
+	GetTodoByID(id string) (*todos.Entry, error)
+	DeleteTodo(id string) error
+	PostTodo(entry *todos.Entry) error
+	PutTodo(entry *todos.Entry) error
 }
 
 type Handler struct {

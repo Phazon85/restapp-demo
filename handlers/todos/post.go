@@ -26,7 +26,7 @@ func (hand *Handler) Post(c *gin.Context) {
 	}
 
 	// Call Post from todos service.
-	if err := hand.service.Post(req.toServiceEntry()); err != nil {
+	if err := hand.service.PostTodo(req.toServiceEntry()); err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 
 		return

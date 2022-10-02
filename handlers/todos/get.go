@@ -19,7 +19,7 @@ import (
 // @Router      /todos [get]
 func (hand *Handler) Get(c *gin.Context) {
 	// Call Get from todos service.
-	entries, err := hand.service.Get()
+	entries, err := hand.service.GetTodo()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 
@@ -42,7 +42,7 @@ func (hand *Handler) Get(c *gin.Context) {
 func (hand *Handler) GetByID(c *gin.Context) {
 	key := c.Param("key")
 	// Call Get from todos service.
-	entry, err := hand.service.GetByID(key)
+	entry, err := hand.service.GetTodoByID(key)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 
